@@ -1,5 +1,8 @@
 import asyncio
+import uuid
 from typing import TypedDict, Annotated
+
+from langchain_core.messages import HumanMessage, AIMessage
 from langchain_mcp_adapters.client import MultiServerMCPClient
 from langgraph.constants import END
 from langgraph.graph import add_messages, StateGraph
@@ -68,21 +71,36 @@ workflow.add_edge('agent', END)
 graph = workflow.compile()
 
 
-
+#build memory
+session_id = str(uuid.uuid4())
+config = {
+    "configurable": {
+        #checkpointer is visited by thread_id
+        "thread_id": session_id,
+    }
+}
 
 
 _printed = set()
 
 async def execute_graph():
     """execute the graph"""
+    state = {"messages": []}
     while True:
         user_input = input("User: ")
         if user_input.lower() in ['quit', 'q', 'exit']:
             print("The chat is over, bye bye!")
             break
         else:
-            async for event in graph.astream({"messages":[("user", user_input)]}, stream_mode="values"):
+            state["messages"].append(HumanMessage(content=user_input))
+            async for event in graph.astream(state, config, stream_mode="values"):
                 _print_event(event, _printed)
+                # Capture response and store it in memory
+                response = event.get("messages", [])
+                if response:
+                    # Ensure response is a valid string, extracting only the content
+                    response_text = response[-1].content if hasattr(response[-1], "content") else str(response[-1])
+                    state["messages"].append(AIMessage(content=response_text))  # Store clean message format
 
 if __name__ == '__main__':
     asyncio.run(execute_graph())

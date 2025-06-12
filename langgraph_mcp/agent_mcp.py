@@ -23,13 +23,6 @@ async def make_agent():
     agent = create_react_agent(llm, tools = tools)
     yield agent
 
-    # async with MultiServerMCPClient({'my_mcp': mcp_server_config}) as client:
-    # # create langgraph agent
-    #     tools = await client.get_tools()
-    #     agent = create_react_agent(llm, tools=tools)
-    #     # agent = create_react_agent(llm, tools=client.get_tools())
-    #     yield agent
-
 
 async def main():
     """

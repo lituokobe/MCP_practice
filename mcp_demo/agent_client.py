@@ -3,7 +3,6 @@ import asyncio
 from langchain.agents import create_tool_calling_agent, AgentExecutor
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_mcp_adapters.client import MultiServerMCPClient
-from sqlalchemy.util import await_fallback
 
 from MCP_practice.zhupu_ai import llm
 

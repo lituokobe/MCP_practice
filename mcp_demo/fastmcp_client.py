@@ -18,11 +18,14 @@ async def test_client():
         resource = await client.list_resources()
         print(resource)
 
-        email = await client.read_resource('datas://users/567/email')
+        email = await client.read_resource('datas://users/456/email')
         print(email)
 
+        product_cat = await client.read_resource("datas://product-categories")
+        print(product_cat[0].text.split('\n')[1])
+
         #call one of the tools
-        result = await client.call_tool(name = 'add', arguments= {"a":34, "b":12})
+        result = await client.call_tool(name = 'minus', arguments= {"a":34, "b":12})
         print(result)
 
 if __name__ == '__main__':
