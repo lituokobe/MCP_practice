@@ -25,6 +25,3 @@ This repository serves as a **hands-on practice** for **MCP**, utilizing **LangC
 - `agent_mcp.py`: Develops a basic asynchronous agent to call MCP tools via **LangGraph**.  
 - `graph_mcp.py`: Constructs a two-node async chatbot using LangGraph, capable of interacting with MCP tools and resources.  
 
----
-
-## 🚀 Start exploring the repository and experimenting with MCP-based workflows! Let me know if you’d like further refinements. 🔥  
